@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Travel Planner | Premium Trip Generator</title>
+    <meta name="description" content="Plan your perfect trip instantly with our AI-powered travel planner. Itineraries, weather, budgets, and more.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="light-mode">
+    <!-- Page Preloader -->
+    <div id="page-preloader" class="page-preloader">
+        <div class="spinner loader-xl"></div>
+        <h2 class="loader-title">AI Travel Planner</h2>
+        <p>Loading magical experiences...</p>
+    </div>
+
+    <div class="background-effects">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="glass-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="ph-fill ph-paper-plane-tilt"></i>
+                <span class="logo-text">AI Travel Planner</span>
+            </div>
+            <div class="nav-links">
+                <a href="#hero">Home</a>
+                <a href="#destinations">Destinations</a>
+                <a href="#planner-section">Planner</a>
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <i class="ph ph-moon"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero section-padding">
+            <div class="hero-content scroll-reveal">
+                <div class="badge">✨ AI-Powered Itineraries</div>
+                <h1 class="hero-title">Plan Your <span class="text-gradient">Perfect Trip</span> with AI</h1>
+                <p class="hero-subtitle">Smart personalized itineraries, real-time weather insights, dynamic budgets, and premium travel guidance instantly.</p>
+                <div class="hero-cta-group">
+                    <a href="#planner-section" class="btn btn-primary ripple-btn">
+                        Start Planning <i class="ph ph-arrow-right"></i>
+                    </a>
+                    <a href="#destinations" class="btn btn-secondary ripple-btn">
+                        Explore Destinations
+                    </a>
+                </div>
+                <!-- Animated Counters -->
+                <div class="hero-counters">
+                    <div class="counter-item">
+                        <span class="counter-val" data-target="300">0</span>+
+                        <span class="counter-label">Destinations</span>
+                    </div>
+                    <div class="counter-item">
+                        <span class="counter-val" data-target="15000">0</span>+
+                        <span class="counter-label">Trips Planned</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual scroll-reveal delay-1">
+                <!-- Abstract visual representing travel cards floating -->
+                <div class="floating-cards">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/White_plane_icon.svg" alt="plane route" class="floating-plane">
+                    
+                    <div class="f-card fc-1 glass-card">
+                        <i class="ph-fill ph-map-pin"></i> Tokyo, Japan
+                    </div>
+                    <div class="f-card fc-2 glass-card">
+                        <i class="ph-duotone ph-sun-dim"></i> 24°C Clear
+                    </div>
+                    <div class="f-card fc-3 glass-card">
+                        <i class="ph-duotone ph-wallet"></i> $1500 Budget
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section id="features" class="features section-padding">
+            <h2 class="section-title scroll-reveal">Why Choose Our AI Planner?</h2>
+            <div class="features-grid scroll-reveal delay-1">
+                <div class="feature-card glass-card">
+                    <div class="icon-wrapper"><i class="ph ph-magic-wand"></i></div>
+                    <h3>Smart Itineraries</h3>
+                    <p>Optimized day-by-day plans featuring real famous attractions.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="icon-wrapper"><i class="ph ph-cloud-sun"></i></div>
+                    <h3>Real Weather</h3>
+                    <p>Live current weather forecasts to ensure you pack right.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="icon-wrapper"><i class="ph ph-chart-pie-slice"></i></div>
+                    <h3>Budget Planning</h3>
+                    <p>Precise category breakdowns for flights, hotels, and activities.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="icon-wrapper"><i class="ph ph-file-pdf"></i></div>
+                    <h3>Download PDF</h3>
+                    <p>Save and download a beautifully formatted itinerary for offline use.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Destinations -->
+        <section id="destinations" class="destinations section-padding">
+            <h2 class="section-title scroll-reveal">Popular Destinations</h2>
+            <div class="destinations-grid scroll-reveal delay-1" id="destinations-grid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- Planner Form Section -->
+        <section id="planner-section" class="planner-section section-padding">
+            <div class="planner-container glass-card scroll-reveal">
+                <h2 class="form-title">Customize Your Journey</h2>
+                
+                <div class="trust-labels">
+                    <span class="t-badge"><i class="ph ph-cloud-sun"></i> Powered by Real Weather Data</span>
+                    <span class="t-badge"><i class="ph ph-currency-circle-dollar"></i> Live Currency Insights</span>
+                    <span class="t-badge"><i class="ph ph-brain"></i> AI Generated Itinerary</span>
+                </div>
+                
+                <form id="travel-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="destination"><i class="ph ph-map-pin"></i> Destination City</label>
+                            <input type="text" id="destination" placeholder="e.g., Paris, France" required autocomplete="off">
+                            <ul class="autocomplete-list glass-card" id="autocomplete-list" style="display:none;"></ul>
+                        </div>
+                        <div class="input-group">
+                            <label for="days"><i class="ph ph-calendar-blank"></i> Number of Days</label>
+                            <input type="number" id="days" min="1" max="14" value="3" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="travelers"><i class="ph ph-users"></i> Travelers Type</label>
+                            <select id="travelers">
+                                <option value="Solo">Solo Traveler</option>
+                                <option value="Couple">Couple</option>
+                                <option value="Family">Family</option>
+                                <option value="Friends">Friends Team</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="accommodation"><i class="ph ph-bed"></i> Accommodation</label>
+                            <select id="accommodation">
+                                <option value="Budget">Budget / Hostel</option>
+                                <option value="Standard" selected>Standard / 3-4 Star</option>
+                                <option value="Luxury">Luxury / 5 Star</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-group">
+                        <label for="budgetRange"><i class="ph ph-wallet"></i> Estimated Budget ($<span id="budgetValue">1500</span>)</label>
+                        <input type="range" id="budgetRange" min="500" max="10000" step="100" value="1500">
+                    </div>
+
+                    <div class="interests-group">
+                        <label><i class="ph ph-heart"></i> Key Interests</label>
+                        <div class="tags-container" id="interests-tags">
+                            <button type="button" class="tag active" data-value="Culture">Culture</button>
+                            <button type="button" class="tag" data-value="Food">Food</button>
+                            <button type="button" class="tag" data-value="Nature">Nature</button>
+                            <button type="button" class="tag" data-value="Nightlife">Nightlife</button>
+                            <button type="button" class="tag" data-value="Shopping">Shopping</button>
+                            <button type="button" class="tag" data-value="Adventure">Adventure</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large w-100 mt-4 ripple-btn">
+                        <i class="ph ph-sparkle"></i> Generate Magic Plan
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen" style="display: none;">
+            <div class="spinner"></div>
+            <h3 class="loading-text">AI is crafting your perfect trip...</h3>
+            <p class="loading-subtext" id="loading-subtext">Analyzing best spots in city...</p>
+        </div>
+
+        <!-- Hidden Results Dashboard (PDF Export Container) -->
+        <section id="results-dashboard" class="results-dashboard section-padding" style="display: none;">
+            <!-- Actions top -->
+            <div class="dashboard-actions scroll-reveal no-print">
+                <h2 class="dash-title">Your Custom Trip Profile</h2>
+                <div class="action-btns">
+                    <button id="save-trip-btn" class="btn btn-outline ripple-btn"><i class="ph ph-bookmark-simple"></i> Save Trip</button>
+                    <button id="download-pdf-btn" class="btn btn-primary ripple-btn"><i class="ph ph-download-simple"></i> Download PDF</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content Container (To be exported to PDF) -->
+            <div id="pdf-content" class="pdf-container scroll-reveal">
+                
+                <!-- Summary Header -->
+                <div class="summary-header">
+                    <div class="summary-bg"></div>
+                    <div class="summary-content">
+                        <div class="s-left">
+                            <h1 id="r-destination">Destination</h1>
+                            <div class="s-meta">
+                                <span class="meta-badge"><i class="ph ph-calendar"></i> <span id="r-days">3</span> Days</span>
+                                <span class="meta-badge"><i class="ph ph-users"></i> <span id="r-travelers">Solo</span></span>
+                                <span class="meta-badge"><i class="ph ph-star"></i> <span id="r-accommodation">Standard</span></span>
+                            </div>
+                        </div>
+                        <div class="s-right glass-card">
+                            <div class="weather-widget">
+                                <img id="r-weather-icon" src="https://openweathermap.org/img/wn/01d.png" alt="Weather" width="50" height="50">
+                                <div>
+                                    <div class="temp"><span id="r-temp">24</span>°C</div>
+                                    <div class="cond" id="r-condition">Clear Sky</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="info-grid">
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-money"></i> Est. Cost</h3>
+                        <p id="r-est-cost">$0</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-calendar-check"></i> Best Time</h3>
+                        <p id="r-best-time">Year-round</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-armchair"></i> Comfort Score</h3>
+                        <p id="r-comfort">90/100</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-cloud-check"></i> Weather Rating</h3>
+                        <p id="r-weather-rating">8/10</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-currency-circle-dollar"></i> Currency</h3>
+                        <p id="r-currency">USD ($)</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-backpack"></i> Packing</h3>
+                        <p id="r-packing">Light clothes, sunglasses.</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-fork-knife"></i> Must Try Food</h3>
+                        <p id="r-food">Local specialties</p>
+                    </div>
+                    <div class="info-card glass-card">
+                        <h3><i class="ph ph-shield-check"></i> Safety Tip</h3>
+                        <p id="r-safety">Keep belongings secure.</p>
+                    </div>
+                </div>
+
+                <!-- Main Layout -->
+                <div class="dashboard-main-layout">
+                    <!-- Left: Itinerary -->
+                    <div class="itinerary-column">
+                        <h2 class="column-title"><i class="ph ph-list-numbers"></i> Day Wise Itinerary</h2>
+                        <div id="itinerary-container" class="timeline">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Map & Charts -->
+                    <div class="widgets-column">
+                        <div class="widget-card glass-card">
+                            <h3 class="widget-title"><i class="ph ph-map-trifold"></i> Destination Map</h3>
+                            <div id="map" class="map-container"></div>
+                        </div>
+                        
+                        <div class="widget-card glass-card">
+                            <h3 class="widget-title"><i class="ph ph-chart-pie-slice"></i> Budget Breakdown</h3>
+                            <p class="budget-total">Total: $<span id="r-budget-total">0</span></p>
+                            <div class="chart-container">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="export-note" style="display:none; text-align:center; padding:20px; font-size:14px; opacity:0.7;">AI Travel Planner Generated Report</div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="f-brand">
+                <i class="ph-fill ph-paper-plane-tilt"></i> AI Travel Planner
+            </div>
+            <div class="f-links">
+                <a href="#hero">Home</a>
+                <a href="#destinations">Destinations</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="f-social">
+                <i class="ph ph-github-logo"></i>
+                <i class="ph ph-twitter-logo"></i>
+            </div>
+        </div>
+        <div class="f-copy">&copy; 2026 AI Travel Planner. Made by Tabreek | Mini Project 2026.</div>
+    </footer>
+
+
+    <!-- External JS Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
